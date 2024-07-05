@@ -1,0 +1,777 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/fluid.png">
+  <link rel="icon" href="/blog/static/logo/left_logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="CWG">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本教程是实用Alist + RaiDrive 实现网盘挂载，Alist可以添加很多种类的网盘，如阿里云盘、百度云盘、天翼云盘、谷歌云盘、123云盘、115云盘、一刻相机...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Alist + RaiDrive 实现将网盘挂载到本地">
+<meta property="og:url" content="http://example.com/2022/12/06/tutorials/%E4%BA%91%E7%9B%98%E6%8C%82%E8%BD%BDAlist%20+%20RaiDrive/index.html">
+<meta property="og:site_name" content="CWG">
+<meta property="og:description" content="本教程是实用Alist + RaiDrive 实现网盘挂载，Alist可以添加很多种类的网盘，如阿里云盘、百度云盘、天翼云盘、谷歌云盘、123云盘、115云盘、一刻相机...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/fb697b58e53549248dc38a3d47ef9dcb.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/93064975b5f148a0959ba348a0c41b83.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/813752ddb52f430e8e91ab612d5ac868.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/e6429c7d3c8f4306b6b8b53a7823dbcd.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2f74fecef737449990b5ba24d3dd4454.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2b74b075152f400c895f6a62967180f5.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/1423d2a618424da6af6a443727779e4d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/b4e66798b0fe4e09879c464c17fdda50.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/15f35589b2df44bbb7f0e9af77c73ab9.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/4fdae5f4474a459ea0bcead527b86c23.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/778a99a415094797a5193276883e2efa.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/d9984d7fea4b495b8e1439c034f3b246.png">
+<meta property="article:published_time" content="2022-12-06T05:30:00.000Z">
+<meta property="article:modified_time" content="2024-07-05T05:17:46.121Z">
+<meta property="article:author" content="CWG">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="Alist">
+<meta property="article:tag" content="RaiDrive">
+<meta property="article:tag" content="云盘挂载">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/fb697b58e53549248dc38a3d47ef9dcb.png">
+  
+  
+  
+  <title>Alist + RaiDrive 实现将网盘挂载到本地 - CWG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"760215241ee059aaa0404b07600f2345","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/blog/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?760215241ee059aaa0404b07600f2345";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>CWG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/blog/static/bgImg/article.jfif') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Alist + RaiDrive 实现将网盘挂载到本地"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        CWG
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-06 13:30" pubdate>
+          2022年12月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          542 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          5 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Alist + RaiDrive 实现将网盘挂载到本地</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="云盘挂载"><a href="#云盘挂载" class="headerlink" title="云盘挂载"></a>云盘挂载</h1><p>本教程是实用Alist + RaiDrive 实现网盘挂载，Alist可以添加很多种类的网盘，如阿里云盘、百度云盘、天翼云盘、谷歌云盘、123云盘、115云盘、一刻相机…</p>
+<h2 id="安装AList"><a href="#安装AList" class="headerlink" title="安装AList"></a>安装AList</h2><p>[AList ](<a target="_blank" rel="noopener" href="https://alist.nn.ci/zh/">Home | AList文档 (nn.ci)</a>)的安装方式有很多，这里我以 Windows 的手动安装为例</p>
+<ol>
+<li>打开<a target="_blank" rel="noopener" href="https://www.jackxjz.com/?golink=aHR0cHM6Ly9naXRodWIuY29tL2FsaXN0LW9yZy9hbGlzdC9yZWxlYXNlcw==">这个链接</a>，找到自己相应的系统版本并下载</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/fb697b58e53549248dc38a3d47ef9dcb.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"><br>2. 解压文件，并将 <code>alist.exe</code> 文件置于一个单独的文件夹<br>3. 点击上方地址栏，输入<code>cmd</code>回车或者在当前文件夹中打开<code>PowerShell</code><br>4. 输入<code>alist server</code>回车，若看到<code>start server @ 0.0.0.0:端口号</code>则代表启动成功<br><img src="https://img-blog.csdnimg.cn/93064975b5f148a0959ba348a0c41b83.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<ol start="5">
+<li><p>接下来我们用浏览器打开下方三种链接的其中一个</p>
+<ul>
+<li><a href="localhost:5244">localhost:5244</a></li>
+<li><a href="127.0.0.1:5244">127.0.0.1:5244</a></li>
+<li><a href="0.0.0.0:5244">0.0.0.0:5244</a></li>
+</ul>
+<blockquote>
+<p>端口号以实际运行结果为主</p>
+</blockquote>
+</li>
+</ol>
+<p>  <img src="https://img-blog.csdnimg.cn/813752ddb52f430e8e91ab612d5ac868.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<ol start="6">
+<li>点击下方登录，默认用户名为<strong>admin</strong>，默认密码在终端界面，登录后页面右上角会有提示</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/e6429c7d3c8f4306b6b8b53a7823dbcd.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/2f74fecef737449990b5ba24d3dd4454.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="AList后台配置"><a href="#AList后台配置" class="headerlink" title="AList后台配置"></a>AList后台配置</h2><h3 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h3><ol>
+<li>点击下方管理，建议先修改用户名和密码</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/2b74b075152f400c895f6a62967180f5.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/1423d2a618424da6af6a443727779e4d.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="添加存储"><a href="#添加存储" class="headerlink" title="添加存储"></a>添加存储</h3><ol>
+<li>切换到存储选项卡，点击添加，不同网盘的配置方式不同，可看<a target="_blank" rel="noopener" href="https://www.jackxjz.com/?golink=aHR0cHM6Ly9hbGlzdC5ubi5jaS96aC9ndWlkZS9kcml2ZXJzL2NvbW1vbi5odG1s">官方文档</a></li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/b4e66798b0fe4e09879c464c17fdda50.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h4 id="阿里云盘"><a href="#阿里云盘" class="headerlink" title="阿里云盘"></a>阿里云盘</h4><ol>
+<li>打开 <a target="_blank" rel="noopener" href="https://www.jackxjz.com/?golink=aHR0cHM6Ly9hbGlzdC5ubi5jaS96aC9ndWlkZS9kcml2ZXJzL2FsaXl1bmRyaXZlLmh0bWw=">AList 文档</a>，点击获取 Token</li>
+<li>将 Token 填入刷新令牌中</li>
+<li>根文件夹ID默认为<code>root</code>，若想添加单独的文件夹，只需用阿里云盘打开文件夹，网址最后的就是根文件夹ID</li>
+</ol>
+<h4 id="123云盘"><a href="#123云盘" class="headerlink" title="123云盘"></a>123云盘</h4><p>123云盘的配置就很简单了，只需要网盘的用户名和密码</p>
+<p><img src="https://img-blog.csdnimg.cn/15f35589b2df44bbb7f0e9af77c73ab9.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="安装-RaiDrive"><a href="#安装-RaiDrive" class="headerlink" title="安装 RaiDrive"></a>安装 RaiDrive</h2><p>在 Windows 电脑上，我们可以使用 <a href="%5BRaiDrive%5D(https://www.raidrive.com.cn/)">RaiDrive</a> 将 AList 挂载到本地</p>
+<ol>
+<li>打开 <a target="_blank" rel="noopener" href="https://www.raidrive.com.cn/">RaiDrive</a> 官网，下载最新版 RaiDrive 并安装</li>
+<li>安装完成后打开 RaiDrive，点击添加</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/4fdae5f4474a459ea0bcead527b86c23.png" srcset="/blog/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-QgK7PJY4-1670040562036)(E:\mediaFile\RaiDrive.png)]"></p>
+<ol start="3">
+<li>选择 NAS 里的 Webdav，选择一个盘符，取一个名字；取消勾选<strong>地址</strong>，填上地址（<code>127.0.0.1</code>）和端口号，路径填 <code>dav</code>，再填上用户名和密码，点击连接</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/778a99a415094797a5193276883e2efa.png" srcset="/blog/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<ol start="4">
+<li>就能在此电脑这里直接管理 AList 上的文件上的文件</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/d9984d7fea4b495b8e1439c034f3b246.png" srcset="/blog/img/loading.gif" lazyload alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-kAF4F6Nl-1670040562037)(E:\mediaFile\Alist.png)]"></p>
+<blockquote>
+<p>注意：因为<code>RaiDrive</code>无法识别容量所以才显示<code>7.99EB</code></p>
+</blockquote>
+<p>好了，这时候就挂在成功啦！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/blog/categories/%E6%95%99%E7%A8%8B/" class="category-chain-item">教程</a>
+  
+  
+    <span>></span>
+    
+  <a href="/blog/categories/%E6%95%99%E7%A8%8B/%E4%BA%91%E7%9B%98%E6%8C%82%E8%BD%BD/" class="category-chain-item">云盘挂载</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/blog/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+        <a href="/blog/tags/Alist/" class="print-no-link">#Alist</a>
+      
+        <a href="/blog/tags/RaiDrive/" class="print-no-link">#RaiDrive</a>
+      
+        <a href="/blog/tags/%E4%BA%91%E7%9B%98%E6%8C%82%E8%BD%BD/" class="print-no-link">#云盘挂载</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Alist + RaiDrive 实现将网盘挂载到本地</div>
+      <div>http://example.com/2022/12/06/tutorials/云盘挂载Alist + RaiDrive/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>CWG</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2022/12/06/tutorials/webstorm%E7%BC%96%E8%BE%91%E5%99%A8%E4%B8%AD%E4%BD%BF%E7%94%A8%E2%80%9C@_%E2%80%9C%E5%BC%95%E5%85%A5%E8%B7%AF%E5%BE%84%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E6%9C%89%E6%B3%A2%E6%B5%AA%E7%BA%BF%E7%9A%84%E9%97%AE%E9%A2%98/" title="webStorm 编辑器中引路的路径“@/“ 无法识别 有波浪线">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">webStorm 编辑器中引路的路径“@/“ 无法识别 有波浪线</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2022/12/06/fontend/js/es/%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82%20%E5%90%8C%E6%AD%A5%E5%86%99%E6%B3%95async%E5%92%8Cawait/" title="异步请求 同步写法async和await的用法">
+                        <span class="hidden-mobile">异步请求 同步写法async和await的用法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       技术支持:&nbsp;&nbsp;CWG &nbsp;&nbsp;&nbsp; <a href="https://caiwenguo.gitee.io/cwg" target="_blank" rel="nofollow noopener"><span>CWG学习笔记</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
