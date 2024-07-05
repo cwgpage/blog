@@ -15,7 +15,7 @@ timezone: ''
 # url: http://example.com
 # url: http://cai-wenguo.gitee.io/cwg-blog/
 # root: /cwg-blog/
-root: /blog
+root: /blog/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
